@@ -1,4 +1,3 @@
-"use client"
 
 import { useEffect, useState } from "react"
 import { obtenerRegistrosAuditoria } from "../api/auditoriaService"
@@ -111,3 +110,4 @@ const Auditoria = () => {
     </div>
   )
 }
+export default Auditoria;

@@ -66,78 +66,78 @@ const ProductoForm = () => {
     }
   }, [id, setValue]);
 
-const onSubmit = async (data) => {
-  setGuardando(true);
+  const onSubmit = async (data) => {
+    setGuardando(true);
 
-  // Convertir el precio a número y asegurarse de que es mayor que 0
-  let precio = parseFloat(data.precio);
+    // Convertir el precio a número y asegurarse de que es mayor que 0
+    let precio = parseFloat(data.precio);
 
-  console.log("Precio en el frontend antes de enviarlo:", precio); // Verificar que es un número
+    console.log("Precio en el frontend antes de enviarlo:", precio); // Verificar que es un número
 
-  // Verificar que el precio es válido
-  if (isNaN(precio) || precio <= 0) {
-    Swal.fire({
-      title: "Error",
-      text: "El precio es obligatorio y debe ser mayor que 0",
-      icon: "error",
-      confirmButtonColor: "#dc3545",
-    });
-    setGuardando(false);
-    return;
-  }
-
-  // Preparar los datos a enviar con el precio correctamente convertido
-  const productoData = {
-    ...data,
-    precio: precio, // Asignar el precio convertido
-  };
-
-  console.log("Datos que se envían al backend:", productoData);
-
-  const { imagen, ...restoProducto } = productoData;
-
-  const formData = new FormData();
-  // Convertir el JSON en un Blob
-  formData.append('producto', new Blob([JSON.stringify(restoProducto)], { type: 'application/json' }));
-
-  // Asegurarse de que la imagen se agrega correctamente
-  if (imagen && imagen[0]) {
-    formData.append('imagen', imagen[0]);
-  }
-
-  try {
-    // Verificar que se esté llamando correctamente la API
-    console.log("FormData enviado:", formData);
-    
-    if (id) {
-      await actualizarProducto(id, formData);
+    // Verificar que el precio es válido
+    if (isNaN(precio) || precio <= 0) {
       Swal.fire({
-        title: "¡Actualizado!",
-        text: "Producto actualizado correctamente",
-        icon: "success",
-        confirmButtonColor: "#198754",
+        title: "Error",
+        text: "El precio es obligatorio y debe ser mayor que 0",
+        icon: "error",
+        confirmButtonColor: "#dc3545",
       });
-    } else {
-      await crearProducto(formData); // Usamos `formData` directamente
-      Swal.fire({
-        title: "¡Creado!",
-        text: "Producto creado correctamente",
-        icon: "success",
-        confirmButtonColor: "#198754",
-      });
+      setGuardando(false);
+      return;
     }
-    navigate("/productos");
-  } catch (error) {
-    Swal.fire({
-      title: "Error",
-      text: "No se pudo guardar el producto",
-      icon: "error",
-      confirmButtonColor: "#dc3545",
-    });
-  } finally {
-    setGuardando(false);
-  }
-};
+
+    // Preparar los datos a enviar con el precio correctamente convertido
+    const productoData = {
+      ...data,
+      precio: precio, // Asignar el precio convertido
+    };
+
+    console.log("Datos que se envían al backend:", productoData);
+
+    const { imagen, ...restoProducto } = productoData;
+
+    const formData = new FormData();
+    // Convertir el JSON en un Blob
+    formData.append('producto', new Blob([JSON.stringify(restoProducto)], { type: 'application/json' }));
+
+    // Asegurarse de que la imagen se agrega correctamente
+    if (imagen && imagen[0]) {
+      formData.append('imagen', imagen[0]);
+    }
+
+    try {
+      // Verificar que se esté llamando correctamente la API
+      console.log("FormData enviado:", formData);
+
+      if (id) {
+        await actualizarProducto(id, formData);
+        Swal.fire({
+          title: "¡Actualizado!",
+          text: "Producto actualizado correctamente",
+          icon: "success",
+          confirmButtonColor: "#198754",
+        });
+      } else {
+        await crearProducto(restoProducto, imagen?.[0]); // ✅ Correcto
+        Swal.fire({
+          title: "¡Creado!",
+          text: "Producto creado correctamente",
+          icon: "success",
+          confirmButtonColor: "#198754",
+        });
+      }
+      navigate("/productos");
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo guardar el producto",
+        icon: "error",
+        confirmButtonColor: "#dc3545",
+      });
+    } finally {
+      setGuardando(false);
+    }
+  };
 
 
 
@@ -302,7 +302,7 @@ const onSubmit = async (data) => {
                           <option value="Gaseosas">🥤 Gaseosas</option>
                           <option value="Carnes">🥩 Carnes</option>
                           <option value="Frutas">🍎 Frutas</option>
-                          <option value="Lácteos">🥛 Lácteos</option> 
+                          <option value="Lácteos">🥛 Lácteos</option>
                           <option value="Panadería">🍞 Panadería</option>
                           <option value="Limpieza"> Limpieza</option>
 
