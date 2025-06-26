@@ -1,0 +1,377 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #1a1a1a;
+  --secondary: #6b7280;
+  --accent: #3b82f6;
+  --background: #fafafa;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.usuarios-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.usuarios-container h2 {
+  color: var(--text-primary);
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.025em;
+}
+
+.controles-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.usuarios-container input[type="text"] {
+  flex: 1;
+  max-width: 320px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  background: var(--surface);
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+.usuarios-container input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.usuarios-container input[type="text"]::placeholder {
+  color: var(--text-muted);
+}
+
+.nuevo-usuario {
+  background: var(--primary);
+  color: var(--surface);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nuevo-usuario:hover {
+  background: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.nuevo-usuario:active {
+  transform: translateY(0);
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.tabla-usuarios thead {
+  background: var(--border-light);
+}
+
+.tabla-usuarios th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabla-usuarios tbody tr {
+  border-bottom: 1px solid var(--border-light);
+  transition: background-color 0.2s ease;
+}
+
+.tabla-usuarios tbody tr:hover {
+  background: var(--border-light);
+}
+
+.tabla-usuarios td {
+  padding: 1rem;
+  vertical-align: middle;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--surface);
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-right: 0.75rem;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+}
+
+.usuario-nombre {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.tabla-usuarios td:nth-child(2) {
+  color: var(--text-secondary);
+}
+
+.rol-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--border-light);
+  color: var(--text-secondary);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.acciones-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editar-btn, .eliminar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.editar-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.eliminar-btn:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--surface);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.editar-btn::before {
+  content: "✎";
+  font-size: 0.875rem;
+}
+
+.eliminar-btn::before {
+  content: "×";
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+
+.tabla-vacia {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+}
+
+.tabla-vacia::before {
+  content: "👥";
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .usuarios-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .controles-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .usuarios-container input[type="text"] {
+    max-width: 100%;
+  }
+
+  .nuevo-usuario {
+    width: 100%;
+  }
+
+  .tabla-usuarios {
+    font-size: 0.8125rem;
+  }
+
+  .tabla-usuarios th,
+  .tabla-usuarios td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .usuarios-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .tabla-usuarios,
+  .tabla-usuarios thead,
+  .tabla-usuarios tbody,
+  .tabla-usuarios th,
+  .tabla-usuarios td,
+  .tabla-usuarios tr {
+    display: block;
+  }
+
+  .tabla-usuarios thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .tabla-usuarios tr {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--surface);
+  }
+
+  .tabla-usuarios td {
+    border: none;
+    position: relative;
+    padding: 0.5rem 0;
+    padding-left: 30%;
+  }
+
+  .tabla-usuarios td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 25%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tabla-usuarios td:first-child {
+    padding-left: 0;
+  }
+
+  .tabla-usuarios td:first-child:before {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.editar-btn:focus-visible,
+.eliminar-btn:focus-visible,
+.nuevo-usuario:focus-visible,
+.usuarios-container input[type="text"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tabla-usuarios tbody tr:hover .avatar {
+  background: var(--text-primary);
+}
+
+.tabla-usuarios tbody tr:hover .usuario-nombre {
+  color: var(--accent);
+}

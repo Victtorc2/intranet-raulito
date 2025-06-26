@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';  // Trae la función de verificación del login
+import { useAuth } from '../auth/AuthContext';
 import Login from '../pages/Login';
 import Inicio from '../pages/Inicio';
 import ProtectedRoute from '../auth/ProtectedRoute';
@@ -11,22 +11,21 @@ import Productos from '../pages/Productos';
 import Reportes from '../pages/Reportes';
 import Usuarios from '../pages/Usuarios';
 import Auditoria from '../pages/Auditoria';
-import ProductoForm from '../components/ProductoForm';  // Importar ProductoForm correctamente
+import ProductoForm from '../components/ProductoForm';
+import FormularioUsuario from '../components/FormularioUsuario';
 
 const AppRouter = () => {
-  const { isLoggedIn, getRole } = useAuth();  // Trae la función de verificación del login
-  const role = getRole();  // Obtén el rol del usuario
+  const { isLoggedIn, getRole } = useAuth();
+  const role = getRole();
 
   return (
     <Router>
       <Routes>
-        {/* Redirige a /login si no está logueado */}
+        {/* Redirección según login */}
         <Route path="/" element={isLoggedIn() ? <Navigate to="/inicio" replace /> : <Navigate to="/login" replace />} />
-
-        {/* Ruta de login */}
         <Route path="/login" element={<Login />} />
 
-        {/* Ruta de Inicio para Admin y Empleado */}
+        {/* Rutas comunes para Admin y Empleado */}
         <Route
           path="/inicio"
           element={
@@ -43,8 +42,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
-        {/* Módulos comunes a Admin y Empleado */}
         <Route
           path="/inventario"
           element={
@@ -78,7 +75,7 @@ const AppRouter = () => {
           }
         />
 
-        {/* Módulos solo para Admin */}
+        {/* Rutas exclusivas para Admin */}
         <Route
           path="/productos"
           element={
@@ -93,7 +90,9 @@ const AppRouter = () => {
           path="/productos/crear"
           element={
             <ProtectedRoute allowedRoles={['Admin']}>
-              <ProductoForm />
+              <AdminLayout>
+                <ProductoForm />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -101,7 +100,9 @@ const AppRouter = () => {
           path="/productos/editar/:id"
           element={
             <ProtectedRoute allowedRoles={['Admin']}>
-              <ProductoForm />
+              <AdminLayout>
+                <ProductoForm />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -125,8 +126,31 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Crear y Editar Usuarios */}
         <Route
-          path="/Auditoria"
+          path="/usuarios/crear"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <AdminLayout>
+                <FormularioUsuario />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/usuarios/editar/:id"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <AdminLayout>
+                <FormularioUsuario />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/auditoria"
           element={
             <ProtectedRoute allowedRoles={['Admin']}>
               <AdminLayout>
@@ -136,7 +160,7 @@ const AppRouter = () => {
           }
         />
 
-        {/* Redirige a login si la ruta no existe */}
+        {/* Ruta por defecto */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
