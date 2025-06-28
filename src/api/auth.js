@@ -5,11 +5,15 @@ const API_URL = 'http://localhost:8080';
 export const loginRequest = async (credentials) => {
   const response = await axios.post(`${API_URL}/auth/login`, credentials);
 
-  const { token, role, correo } = response.data; // 👈 CAMBIO AQUÍ
+  // Ahora extraemos también el id:
+  const { token, role, correo, id } = response.data;
 
-  // Guardamos el token y el correo (como 'usuario') en localStorage
+  // Guardamos todo en localStorage como un JSON:
+  localStorage.setItem(
+    'usuario',
+    JSON.stringify({ id, correo })
+  );
   localStorage.setItem('token', token);
-  localStorage.setItem('usuario', correo); // 👈 GUARDAMOS EL CORREO COMO 'usuario'
 
-  return { token, role };
+  return { token, role, id };
 };

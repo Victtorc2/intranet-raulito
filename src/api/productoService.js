@@ -57,6 +57,18 @@ export const listarProductos = async (nombre, categoria, codigo) => {
   }
 };
 
+export const verificarStock = async (id, cantidad) => {
+  try {
+    // Reutilizamos tu export existente
+    const producto = await obtenerProductoPorId(id)
+    return producto.stock >= cantidad
+  } catch (err) {
+    console.error("Error comprobando stock:", err)
+    // En caso de fallo asumimos que no hay stock suficiente
+    return false
+  }
+}
+
 export const obtenerProductoPorId = async (id) => {
   try {
     const response = await axios.get(`${apiUrl}/${id}`, {
