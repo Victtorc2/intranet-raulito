@@ -8,10 +8,17 @@ const getAuthToken = () =>
     ? localStorage.getItem('token')
     : null
 
-const getCurrentUser = () =>
-  typeof window !== 'undefined'
-    ? localStorage.getItem('usuario') || 'usuario_sistema'
-    : 'usuario_sistema'
+const getCurrentUser = () => {
+  if (typeof window === 'undefined') return null;
+  const raw = localStorage.getItem('usuario');
+  if (!raw) return null;
+  try {
+    const { correo } = JSON.parse(raw);
+    return correo;
+  } catch {
+    return raw;  // en caso de que guardases solo un string
+  }
+};
 
 const handleApiError = async (response) => {
   if (!response.ok) {
@@ -26,34 +33,35 @@ const handleApiError = async (response) => {
 export const ventaService = {
   // 1. Registrar nueva venta
   async registrarVenta(ventaData) {
-    const token   = getAuthToken()
-    const usuario = getCurrentUser()
-    if (!token) throw new Error('No se encontró token de autenticación')
+  const token  = getAuthToken();
+  const correo = getCurrentUser();
 
-    const dto = {
-      productos: ventaData.productos.map((item) => ({
-        productoId: item.producto.id,
-        cantidad:   item.cantidad,
-        precio:     item.producto.precio,
-      })),
-      metodoPago:    ventaData.metodoPago.toUpperCase(),
-      descuento:     ventaData.descuento || 0,
-      observaciones: ventaData.observaciones || '',
-    }
+  if (!token)  throw new Error('No se encontró token de autenticación');
+  if (!correo) throw new Error('No se encontró el correo de usuario');
 
-    const res = await fetch(apiUrl, {
-      method:  'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:  `Bearer ${token}`,
-        usuario,
-      },
-      body: JSON.stringify(dto),
-    })
+  const dto = {
+    correo,
+    metodoPago: ventaData.metodoPago.toUpperCase(),
+    descuento:  parseFloat(ventaData.descuento) || 0.0,
+    detalles:   ventaData.productos.map(item => ({
+      productoId: item.producto.id,
+      cantidad:   item.cantidad
+    }))
+  };
 
-    await handleApiError(res)
-    return res.json()
-  },
+  const res = await fetch(apiUrl, {
+    method:  'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization:  `Bearer ${token}`,
+      usuario:        correo,
+    },
+    body: JSON.stringify(dto),
+  });
+
+  await handleApiError(res);
+  return res.json();
+},
 
   // 2. Obtener historial
   async obtenerHistorial() {
