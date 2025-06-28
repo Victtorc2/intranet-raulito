@@ -1,0 +1,172 @@
+/* Contenedor principal */
+.reporte-ventas-container {
+  max-width: 100%;
+  margin: auto;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.dark .reporte-ventas-container {
+  background-color: #1f2937;
+}
+
+/* Cabecera */
+.reporte-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.reporte-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reporte-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.dark .reporte-title {
+  color: #f3f4f6;
+}
+
+.reporte-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.dark .reporte-subtitle {
+  color: #9ca3af;
+}
+
+.reporte-subicon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Icono principal */
+.reporte-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #10b981;
+}
+
+/* Total semanal */
+.total-semanal-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.dark .total-semanal-box {
+  background-color: #374151;
+  color: #f3f4f6;
+}
+
+.total-semanal-monto {
+  font-weight: 600;
+  color: #10b981;
+}
+
+/* Chart contenedor */
+.reporte-chart {
+  height: 400px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Barra hover */
+.bar-hover {
+  transition: all 0.3s ease-in-out;
+}
+
+.bar-hover:hover {
+  filter: brightness(1.1);
+  transform: scaleY(1.03);
+  transform-origin: bottom;
+}
+
+/* Tooltip personalizado */
+.custom-tooltip {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 13px;
+  color: #111827;
+}
+
+.custom-tooltip-total {
+  font-weight: 500;
+  color: #10b981;
+}
+
+.custom-tooltip-fecha {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.dark .custom-tooltip {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #f3f4f6;
+}
+
+/* Spinner */
+.reporte-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.reporte-spinner {
+  animation: spin 1s linear infinite;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-bottom: 2px solid #10b981;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+  .recharts-wrapper {
+    font-size: 12px;
+  }
+  .recharts-cartesian-axis-tick-value {
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .recharts-wrapper {
+    font-size: 10px;
+  }
+  .recharts-cartesian-axis-tick-value {
+    font-size: 8px !important;
+  }
+}

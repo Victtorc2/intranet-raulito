@@ -1,0 +1,72 @@
+:root {
+  --primary: #6366f1;
+  --secondary: #8b5cf6;
+
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --radius: 0.75rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+
+.reportes-container {
+  padding: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.reportes-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.reportes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card .card-title {
+  padding: 0.7rem;
+  font-size: 25px ;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 0;
+  color: var(--gray-700);
+}
+
+.card-content {
+  padding: var(--spacing-lg);
+  overflow-x: auto;
+}
+
