@@ -170,64 +170,63 @@ const Inicio = () => {
   }
 
   const verDetalleVenta = (venta) => {
-    const productosHtml = venta.productos
-      ?.map(
-        (item) => `
-        <tr>
-          <td style="padding: 8px; border-bottom: 1px solid #eee;">${item.producto?.nombre || item.nombre}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${item.cantidad}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">S/ ${(
-            item.producto?.precio || item.precio
-          ).toFixed(2)}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">S/ ${item.subtotal.toFixed(
-            2,
-          )}</td>
-        </tr>
-      `,
-      )
-      .join("")
+  const fechaStr = new Date(venta.fecha).toLocaleDateString("es-PE", {
+    day:   "numeric",
+    month: "numeric",
+    year:  "numeric",
+  });
+  const horaStr = new Date(venta.fecha).toLocaleTimeString("es-PE", {
+    hour:   "2-digit",
+    minute: "2-digit",
+  });
 
-    Swal.fire({
-      title: `Venta #${venta.id}`,
-      html: `
-        <div style="text-align: left;">
-          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-            <p style="margin: 5px 0;"><strong>📅 Fecha:</strong> ${new Date(venta.fecha).toLocaleDateString(
-              "es-PE",
-            )}</p>
-            <p style="margin: 5px 0;"><strong>🕐 Hora:</strong> ${new Date(venta.fecha).toLocaleTimeString("es-PE")}</p>
-            <p style="margin: 5px 0;"><strong>💳 Método:</strong> ${venta.metodoPago}</p>
-            <p style="margin: 5px 0;"><strong>💰 Total:</strong> <span style="color: #28a745; font-weight: bold;">S/ ${venta.total.toFixed(
-              2,
-            )}</span></p>
-            ${
-              venta.observaciones
-                ? `<p style="margin: 5px 0;"><strong>📝 Observaciones:</strong> ${venta.observaciones}</p>`
-                : ""
-            }
-          </div>
-          
-          <h4 style="margin: 15px 0 10px 0; color: #495057;">📦 Productos:</h4>
-          <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-            <thead>
-              <tr style="background: #f8f9fa;">
-                <th style="padding: 10px 8px; border-bottom: 2px solid #dee2e6; text-align: left;">Producto</th>
-                <th style="padding: 10px 8px; border-bottom: 2px solid #dee2e6; text-align: center;">Cant.</th>
-                <th style="padding: 10px 8px; border-bottom: 2px solid #dee2e6; text-align: right;">Precio</th>
-                <th style="padding: 10px 8px; border-bottom: 2px solid #dee2e6; text-align: right;">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${productosHtml || '<tr><td colspan="4" style="text-align: center; padding: 20px;">No hay productos</td></tr>'}
-            </tbody>
-          </table>
-        </div>
-      `,
-      icon: "info",
-      confirmButtonText: "Cerrar",
-      width: "600px",
+  // Crea las filas de productos
+  const productosHtml = venta.detalles
+    ?.map(item => {
+      const nombre   = item.productoNombre ?? "—";
+      const cantidad = item.cantidad       ?? 0;
+      const precio   = item.precioUnitario ?? 0;
+      const subtotal = item.subtotal       ?? 0;
+      return `
+        <tr>
+          <td style="padding:8px; border-bottom:1px solid #eee;">${nombre}</td>
+          <td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">${cantidad}</td>
+          <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">S/ ${precio.toFixed(2)}</td>
+          <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">S/ ${subtotal.toFixed(2)}</td>
+        </tr>
+      `;
     })
-  }
+    .join("");
+
+  Swal.fire({
+    title: `Venta #${venta.id}`,
+    html: `
+      <div style="text-align:left; margin-bottom:16px;">
+        <p><strong>📅 Fecha:</strong> ${fechaStr}</p>
+        <p><strong>🕐 Hora:</strong> ${horaStr}</p>
+        <p><strong>💳 Método:</strong> ${venta.metodoPago}</p>
+        <p><strong>💰 Total:</strong> <span style="color:#28a745;">S/ ${venta.total.toFixed(2)}</span></p>
+      </div>
+      <h4 style="margin-bottom:8px;">📦 Productos:</h4>
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead>
+          <tr style="background:#f8f9fa;">
+            <th style="padding:10px; border-bottom:2px solid #dee2e6; text-align:left;">Producto</th>
+            <th style="padding:10px; border-bottom:2px solid #dee2e6; text-align:center;">Cant.</th>
+            <th style="padding:10px; border-bottom:2px solid #dee2e6; text-align:right;">Precio</th>
+            <th style="padding:10px; border-bottom:2px solid #dee2e6; text-align:right;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${productosHtml || '<tr><td colspan="4" style="text-align:center; padding:20px;">No hay productos</td></tr>'}
+        </tbody>
+      </table>
+    `,
+    icon: "info",
+    confirmButtonText: "Cerrar",
+    width: "600px",
+  });
+};
 
   const obtenerSaludo = () => {
     const hora = new Date().getHours()
@@ -359,7 +358,7 @@ const Inicio = () => {
                       <div className="detail-item">
                         <span className="detail-icon">📦</span>
                         <span className="detail-text">
-                          {venta.productos?.length || 0} producto{(venta.productos?.length || 0) !== 1 ? "s" : ""}
+                          {venta.detalles?.length || 0} producto{(venta.detalles?.length || 0) !== 1 ? "s" : ""}
                         </span>
                       </div>
                     </div>
