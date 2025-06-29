@@ -2,25 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
-/* Variables de colores */
-:root {
-  --primary-color: #2c3e50;
-  --secondary-color: #34495e;
-  --accent-color: #3498db;
-  --light-color: #ecf0f1;
-  --dark-color: #2c3e50;
-  --success-color: #2ecc71;
-  --warning-color: #f39c12;
-  --danger-color: #e74c3c;
-  --text-color: #333;
-  --border-color: #ddd;
-}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -42,8 +25,8 @@ body {
 /* Header */
 .header {
   grid-area: header;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: rgb(233, 233, 83);
+  color: rgb(0, 0, 0);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -74,7 +57,7 @@ body {
 /* Sidebar */
 .sidebar-right {
   grid-area: sidebar;
-  background-color: white;
+  background-color: rgb(252, 57, 57);
   border-right: 1px solid var(--border-color);
   padding: 1.5rem;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
@@ -88,6 +71,7 @@ body {
   margin-bottom: 1.5rem;
   padding: 1rem;
   border-bottom: 1px solid var(--border-color);
+
 }
 
 .user-avatar {
@@ -108,14 +92,14 @@ body {
 
 .user-role {
   font-size: 0.9rem;
-  color: #f39c12; /* Color para el rol */
+  color: #ffffff; /* Color para el rol */
 }
 
 /* Navbar */
 .navbar h2 {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
-  color: var(--primary-color);
+  color:white;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.5rem;
 }
@@ -167,7 +151,7 @@ body {
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(250, 43, 43, 0.05);
 }
 
 .panel-section h3 {
@@ -236,7 +220,7 @@ body {
   background-color: white;
   border-radius: 8px;
   padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px #ff00000d;
 }
 
 .summary-card h4 {

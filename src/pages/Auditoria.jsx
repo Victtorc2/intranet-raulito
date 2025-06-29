@@ -54,7 +54,7 @@ const Auditoria = () => {
             <Activity className="title-icon" />
             Registros de Auditoría
           </h2>
-          <p className="card-subtitle">Historial completo de actividades del sistema</p>
+          <p className="card-subtitle">Historial completo de actividades del sistema    </p>
         </div>
 
         <div className="card-content">
