@@ -5,23 +5,23 @@ import { Activity, User, Calendar } from "lucide-react"
 import "../styles/Auditoria.css";
 
 const Auditoria = () => {
-  const [auditoriaData, setAuditoriaData] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const [auditoriaData, setAuditoriaData] = useState([]) //almacena los registros de auditoria
+  const [loading, setLoading] = useState(true) // carga los datos 
+  const [error, setError] = useState("")  // manejar los msj de errores
 
-  useEffect(() => {
+  useEffect(() => { // se utiliza el hook con un arreglo de dependencia vacio
     const fetchAuditoriaData = async () => {
       try {
         const data = await obtenerRegistrosAuditoria()
-        setAuditoriaData(data)
-        setLoading(false)
+        setAuditoriaData(data) // Actualiza el estado auditoriaData con los datos que llegaron del backend.
+        setLoading(false) //Actualiza el estado loading a false
       } catch (err) {
         setError("Error al obtener los registros de auditoría.")
         setLoading(false)
       }
     }
 
-    fetchAuditoriaData()
+    fetchAuditoriaData() //función que ejecuta
   }, [])
 
   if (loading) {

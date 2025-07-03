@@ -40,7 +40,6 @@ const manejarError = (error) => {
   throw error;  // Lanza el error para manejarlo donde se llame esta función
 };
 
-// Obtener todos los registros de auditoría
 export const obtenerRegistrosAuditoria = async () => {
   try {
     // Realiza la solicitud GET añadiendo el token JWT en los encabezados

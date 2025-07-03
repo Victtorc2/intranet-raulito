@@ -1,7 +1,9 @@
-"use client"
 
 import { useState, useEffect } from "react"
 import { listarProductos, productosProximosAVencer, eliminarProducto } from "../api/productoService"
+// En el import:
+import { productosStockBajo as fetchProductosStockBajo } from "../api/productoService"
+
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import "../styles/Productos.css"
@@ -27,6 +29,11 @@ const Productos = () => {
     }
   }, [selectedTabIndex, categoriaSeleccionada])
 
+  useEffect(() => {
+  cargarProductosAVencer()
+  cargarProductosStockBajo()
+}, [])
+
   const cargarProductos = () => {
     listarProductos(filtroNombre, categoriaSeleccionada)
       .then((data) => {
@@ -45,17 +52,18 @@ const Productos = () => {
       .catch((error) => console.error("Error al cargar productos próximos a vencer:", error))
   }
 
-  const cargarProductosStockBajo = () => {
-    productosStockBajo()
-      .then((data) => {
-        console.log("Productos con stock bajo:", data)
-        setProductosStockBajo(data)
-      })
-      .catch((error) => {
-        console.error("Error al cargar productos con stock bajo:", error)
-        Swal.fire("Error", "No se pudo cargar los productos con stock bajo.", "error")
-      })
-  }
+const cargarProductosStockBajo = () => {
+  fetchProductosStockBajo()
+    .then((data) => {
+      console.log("Productos con stock bajo:", data)
+      setProductosStockBajo(data)
+    })
+    .catch((error) => {
+      console.error("Error al cargar productos con stock bajo:", error)
+      Swal.fire("Error", "No se pudo cargar los productos con stock bajo.", "error")
+    })
+}
+
 
   const eliminarProductoHandler = (producto) => {
     Swal.fire({
