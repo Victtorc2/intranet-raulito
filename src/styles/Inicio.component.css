@@ -13,6 +13,8 @@
 
 /* Sección de Bienvenida */
 .welcome-section {
+  position: relative;    /* para que el ::before quede contenido */
+  overflow: hidden;      /* recorta el brillo y evita desbordes */
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   padding: 40px;
