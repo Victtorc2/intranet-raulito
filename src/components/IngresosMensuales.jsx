@@ -13,8 +13,8 @@ import { obtenerIngresosMensuales } from "../api/reporteService";
 import "../styles/IngresosMensuales.css";
 
 const MESES_ORDENADOS = [
-  "enero", "febrero", "marzo", "abril", "mayo", "junio",
-  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  "ene", "feb", "mar", "abr", "may", "jun",
+  "jul", "ago", "sep", "oct", "nov", "dic"
 ];
 
 const IngresosMensuales = () => {

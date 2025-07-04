@@ -112,15 +112,15 @@ const ReporteVentasPorDia = () => {
             <CartesianGrid stroke="transparent" />
             <XAxis dataKey="dia" tick={{ fontSize: 12 }} />
             <YAxis
-  domain={[0, 1000]}
-  ticks={[0, 250, 500, 750, 950]}
-  tick={{ fontSize: 12 }}
-  tickFormatter={(value) =>
-    `S/. ${value.toLocaleString("es-PE", {
-      minimumFractionDigits: 0,
-    })}`
-  }
-/>
+              domain={[0, 1000]}
+              ticks={[0, 250, 500, 750, 950]}
+              tick={{ fontSize: 12 }}
+              tickFormatter={(value) =>
+                `S/. ${value.toLocaleString("es-PE", {
+                  minimumFractionDigits: 0,
+                })}`
+              }
+            />
 
 
             <Tooltip content={<CustomTooltip />} />

@@ -10,6 +10,7 @@
   --gray-900: #111827;
 
   --radius: 0.75rem;
+  --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
@@ -21,7 +22,6 @@
   margin: 0;
 }
 
-
 .reportes-container {
   padding: var(--spacing-xl);
   max-width: 1400px;
@@ -30,7 +30,7 @@
 }
 
 .reportes-title {
-  font-size: 16px;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--gray-900);
   margin-bottom: var(--spacing-xl);
@@ -49,6 +49,12 @@
   border-radius: var(--radius);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+
+  /* Para que el contenido defina su altura */
+  height: auto;
+  min-height: 200px;
 }
 
 .card:hover {
@@ -57,16 +63,25 @@
 }
 
 .card .card-title {
-  padding: 0.7rem;
-  font-size: 25px ;
-  font-weight: 500;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 1.2rem;
+  font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 0;
   color: var(--gray-700);
+  border-bottom: 1px solid var(--gray-200);
 }
 
 .card-content {
   padding: var(--spacing-lg);
   overflow-x: auto;
+
+  /* Para permitir que el contenido crezca naturalmente */
+  flex: 1 1 auto;
+  min-height: 100px;
 }
 
+.card-content > * {
+  width: 100%;
+  height: auto;
+}
