@@ -1,4 +1,3 @@
-"use client"
 
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -7,15 +6,15 @@ import { useAuth } from "../auth/AuthContext"
 import "../styles/Login.css"
 
 const Login = () => {
-  const { login } = useAuth()
+  const { login } = useAuth() // Hook personalizado para acceder a funciones de autenticación
   const [correo, setCorreo] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+  const navigate = useNavigate() // Hook de React Router para redireccionar
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    setIsLoading(true)
+    setIsLoading(true) //activa el estado de la carga
 
     try {
       await login({ correo, password })

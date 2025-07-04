@@ -4,7 +4,16 @@ import Swal from 'sweetalert2';
 const apiUrl = 'http://localhost:8080/api/productos';
 
 const getAuthToken = () => localStorage.getItem('token');
-const getUsuario = () => localStorage.getItem('usuario');  // Asegúrate de que el usuario esté guardado en localStorage
+const getUsuario = () => {
+  const raw = localStorage.getItem('usuario');
+  if (!raw) return null;
+  try {
+    const { correo } = JSON.parse(raw);
+    return correo;  // ✅ Devuelve solo el string del correo
+  } catch {
+    return raw;  // Por si ya está como string
+  }
+};
 
 const manejarError = (error) => {
   let mensaje = 'Hubo un problema. Por favor, intenta más tarde.';

@@ -37,7 +37,6 @@ const manejarError = (error) => {
   throw error;  
 };
 
-
 export const obtenerRegistrosAuditoria = async () => {
   try {
     
