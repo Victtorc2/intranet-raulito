@@ -1,3 +1,4 @@
+"use client"
 
 import { useState, useEffect, useCallback } from "react"
 import {
@@ -28,7 +29,6 @@ const Ventas = () => {
   // Estados principales
   const [activeTab, setActiveTab] = useState("nueva")
   const [ventas, setVentas] = useState([])
-  const [estadisticas, setEstadisticas] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -134,21 +134,19 @@ const Ventas = () => {
     }
   }, [handleError])
 
- const cargarEstadisticas = useCallback(async () => {
-  setLoading(true)
-  setError(null)
-  try {
-    const data = await ventaService.obtenerEstadisticas()
-    setEstadisticas(data)
-    return data
-  } catch (err) {
-    handleError(err, "Error al cargar estadísticas")
-    return null
-  } finally {
-    setLoading(false)
-  }
-}, [handleError])
-
+  const cargarEstadisticas = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await ventaService.obtenerEstadisticas()
+      return data
+    } catch (err) {
+      handleError(err, "Error al cargar estadísticas")
+      return null
+    } finally {
+      setLoading(false)
+    }
+  }, [handleError])
 
   const registrarVenta = useCallback(
     async (ventaData) => {
@@ -231,8 +229,6 @@ const Ventas = () => {
     buscarProductosEnTiempoReal()
   }, [searchTerm])
 
-  
-  
   // Función para cargar datos iniciales
   const cargarDatosIniciales = async () => {
     try {
@@ -446,7 +442,6 @@ const Ventas = () => {
             {[
               { id: "nueva", label: "Nueva Venta" },
               { id: "historial", label: "Historial de Ventas" },
-              { id: "estadisticas", label: "Estadísticas" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -850,133 +845,7 @@ const Ventas = () => {
               </div>
             </div>
           )}
-
-          {/* Estadísticas Tab */}
-          {activeTab === "estadisticas" && (
-            <div className="space-y-4">
-              {loading ? (
-                <div className="loading-indicator">
-                  <div className="spinner"></div>
-                  <span>Cargando estadísticas...</span>
-                </div>
-              ) : estadisticas ? (
-                <>
-                  {/* Métricas principales */}
-                  <div className="metrics-grid">
-                    <div className="metric-card indigo">
-                      <div className="metric-header">
-                        <div>
-                          <p className="metric-label">Ventas Hoy</p>
-                          <p className="metric-value">{estadisticas.ventasHoy || 0}</p>
-                        </div>
-                        <CalendarDays className="metric-icon indigo" />
-                      </div>
-                    </div>
-
-                    <div className="metric-card green">
-                      <div className="metric-header">
-                        <div>
-                          <p className="metric-label">Ingresos Hoy</p>
-                          <p className="metric-value">S/ {(estadisticas.ingresosHoy || 0).toFixed(2)}</p>
-                        </div>
-                        <Banknote className="metric-icon green" />
-                      </div>
-                    </div>
-
-                    <div className="metric-card blue">
-                      <div className="metric-header">
-                        <div>
-                          <p className="metric-label">Ventas del Mes</p>
-                          <p className="metric-value">{estadisticas.ventasMes || 0}</p>
-                        </div>
-                        <Calendar className="metric-icon blue" />
-                      </div>
-                    </div>
-
-                    <div className="metric-card purple">
-                      <div className="metric-header">
-                        <div>
-                          <p className="metric-label">Ingresos del Mes</p>
-                          <p className="metric-value">S/ {(estadisticas.ingresosMes || 0).toFixed(2)}</p>
-                        </div>
-                        <TrendingUp className="metric-icon purple" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Gráficos */}
-                  <div className="charts-grid">
-                    {/* Ventas por método de pago */}
-                    <div className="card">
-                      <div className="card-header">
-                        <h2 className="card-title">Ventas por Método de Pago</h2>
-                      </div>
-                      <div className="card-body">
-                        <div className="chart-container">
-                          <div className="text-center">
-                            <div className="chart-legend">
-                              <div className="legend-item">
-                                <div className="legend-color green"></div>
-                                <span>Efectivo ({estadisticas.porcentajeEfectivo || 0}%)</span>
-                              </div>
-                              <div className="legend-item">
-                                <div className="legend-color blue"></div>
-                                <span>Tarjeta ({estadisticas.porcentajeTarjeta || 0}%)</span>
-                              </div>
-                            </div>
-                            <div className="chart-circles">
-                              <div>
-                                <div className="chart-circle green">{estadisticas.porcentajeEfectivo || 0}%</div>
-                                <p className="chart-circle-label">Efectivo</p>
-                              </div>
-                              <div>
-                                <div className="chart-circle blue">{estadisticas.porcentajeTarjeta || 0}%</div>
-                                <p className="chart-circle-label">Tarjeta</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Productos más vendidos */}
-                    <div className="card">
-                      <div className="card-header">
-                        <h2 className="card-title">Productos Más Vendidos</h2>
-                      </div>
-                      <div className="card-body">
-                        <div className="top-products">
-                          {estadisticas.productosMasVendidos?.length > 0 ? (
-                            estadisticas.productosMasVendidos.map((producto, index) => (
-                              <div key={index} className="product-item">
-                                <div className="product-rank">{index + 1}</div>
-                                <div className="product-info">
-                                  <h4 className="product-name">{producto.nombre}</h4>
-                                  <p className="product-sales">{producto.cantidadVendida} unidades vendidas</p>
-                                </div>
-                                <div className="product-revenue">S/ {producto.ingresos.toFixed(2)}</div>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="empty-state">
-                              <p>No hay datos de productos disponibles</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="empty-state">
-                  <h3 className="empty-state-title">No hay estadísticas disponibles</h3>
-                  <p className="empty-state-subtitle">Los datos se cargarán cuando haya ventas registradas</p>
-                </div>
-              )}
-            </div>
-          )}
         </div>
-
         {/* Modal para detalle de venta */}
         {showModal && selectedVenta && (
           <div className="modal-overlay" onClick={cerrarModal}>
