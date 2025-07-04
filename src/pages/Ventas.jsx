@@ -24,8 +24,10 @@ import {
 import "../styles/ventas.component.css"
 import { ventaService } from "../api/ventaService"
 import * as productoService from "../api/productoService"
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
-const Ventas = () => {
+const Ventas = () => { 
   // Estados principales
   const [activeTab, setActiveTab] = useState("nueva")
   const [ventas, setVentas] = useState([])
@@ -63,6 +65,17 @@ const Ventas = () => {
   const [notification, setNotification] = useState(null)
 
   const TASA_IMPUESTO = 0.18
+
+  const formatFecha = (fechaISO) =>
+    new Date(`${fechaISO}T00:00:00-05:00`).toLocaleDateString("es-PE");
+
+  const formatHora = (fechaISO, horaStr) => {
+    const iso = `${fechaISO}T${horaStr}-05:00`;
+    return new Date(iso).toLocaleTimeString("es-PE", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   // Función para manejar errores
   const handleError = useCallback((error, defaultMessage) => {
@@ -393,8 +406,53 @@ const Ventas = () => {
   }
 
   const exportarExcel = () => {
-    mostrarNotificacion("Función de exportación en desarrollo", "info")
+  if (ventasFiltradas.length === 0) {
+    mostrarNotificacion("No hay ventas para exportar", "warning");
+    return;
   }
+
+  // 1) Preparamos los datos en forma de array de objetos
+  const datosParaExcel = ventasFiltradas.map((venta) => {
+    const fechaFormateada = formatFecha(venta.fecha);
+    const horaFormateada = formatHora(venta.fecha, venta.hora);
+    return {
+      "ID Venta": venta.id,
+      Fecha: fechaFormateada,
+      Hora: horaFormateada,
+      "Total (S/)": venta.total.toFixed(2),
+      "Método": venta.metodoPago,
+      "Cant. Productos": (venta.detalles?.length || 0),
+    };
+  });
+
+  // 2) Creamos un libro de trabajo y una hoja a partir de los datos
+  const ws = XLSX.utils.json_to_sheet(datosParaExcel, { origin: "A1" });
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Ventas");
+
+  // 3) Ajustes opcionales de ancho de columna
+  const wscols = [
+    { wch: 10 }, // ID Venta
+    { wch: 15 }, // Fecha
+    { wch: 10 }, // Hora
+    { wch: 12 }, // Total
+    { wch: 12 }, // Método
+    { wch: 15 }, // Cant. Productos
+  ];
+  ws["!cols"] = wscols;
+
+  // 4) Generamos el archivo y forzamos la descarga
+  const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([wbout], {
+    type:
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+  });
+  saveAs(blob, `historial_ventas_${new Date().toISOString().slice(0,10)}.xlsx`);
+
+  mostrarNotificacion("Excel generado correctamente", "success");
+};
+
+  
 
   const imprimirVenta = (venta) => {
     mostrarNotificacion(`Imprimiendo venta #${venta.id}`, "info")
@@ -759,24 +817,15 @@ const Ventas = () => {
                           ventasFiltradas.map((venta) => (
                             <tr key={venta.id}>
                               <td className="font-medium">#{venta.id}</td>
-                              <td>{new Date(venta.fecha).toLocaleDateString("es-PE")}</td>
-                              <td>
-                                {new Date(venta.fecha).toLocaleTimeString("es-PE", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
-                              </td>
+                              <td>{formatFecha(venta.fecha)}</td>
+                              <td>{formatHora(venta.fecha, venta.hora)}</td>
                               <td className="font-semibold text-green">S/ {venta.total.toFixed(2)}</td>
                               <td>
-                                <span
-                                  className={`badge ${
-                                    venta.metodoPago === "EFECTIVO" ? "badge-success" : "badge-info"
-                                  }`}
-                                >
+                                <span className={`badge ${venta.metodoPago === "EFECTIVO" ? "badge-success" : "badge-info"}`}>
                                   {venta.metodoPago}
                                 </span>
                               </td>
-                              <td>{venta.productos?.length || 0} item(s)</td>
+                              <td>{venta.detalles?.length || 0} item(s)</td>
                               <td>
                                 <div className="flex gap-2">
                                   <button onClick={() => verDetalleVenta(venta)} className="btn-icon btn-icon-view">
@@ -848,59 +897,98 @@ const Ventas = () => {
         </div>
         {/* Modal para detalle de venta */}
         {showModal && selectedVenta && (
-          <div className="modal-overlay" onClick={cerrarModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2 className="modal-title">Detalle de Venta #{selectedVenta.id}</h2>
-                <button onClick={cerrarModal} className="modal-close">
+          <div
+            className="modal-overlay  fixed inset-0 bg-black/50 flex items-center justify-center"
+            style={{ zIndex: 9999 }} // por si acaso
+          >
+            <div className="modal-content bg-white rounded-lg overflow-hidden w-full max-w-xl">
+              
+              {/* Header púrpura */}
+              <div
+                className="modal-header bg-gradient-to-r from-purple-600 to-indigo-600 text-white flex justify-between items-center px-6 py-4"
+                style={{ paddingLeft: '1rem' /* inline */ }}
+              >
+                <h2 className="modal-title text-lg font-semibold !pl-6">
+                  Detalle de Venta #{selectedVenta.id}
+                </h2>
+                <button
+                  onClick={cerrarModal}
+                  className="modal-close text-white bg-transparent hover:bg-transparent p-1"
+                  style={{ backgroundColor: 'transparent' }} // inline
+                >
                   <X size={20} />
                 </button>
               </div>
 
-              <div className="modal-body">
-                <div className="venta-info mb-4">
-                  <div className="info-row">
-                    <span className="info-label">Fecha:</span>
-                    <span className="info-value">{new Date(selectedVenta.fecha).toLocaleString("es-PE")}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="info-label">Método de Pago:</span>
-                    <span className="info-value">{selectedVenta.metodoPago}</span>
-                  </div>
-                  {selectedVenta.observaciones && (
-                    <div className="info-row">
-                      <span className="info-label">Observaciones:</span>
-                      <span className="info-value">{selectedVenta.observaciones}</span>
-                    </div>
-                  )}
-                  <div className="info-row">
-                    <span className="info-label">Total:</span>
-                    <span className="info-value amount">S/ {selectedVenta.total.toFixed(2)}</span>
-                  </div>
+              {/* Body */}
+              <div className="modal-body bg-white p-6 space-y-8">
+
+                {/* — Tabla 1: Resumen de Venta */}
+                <div className="rounded-md p-4">
+                  <table
+                    className="w-full table-fixed border-t border-b border-gray-300"
+                    style={{ borderTopWidth: '1px', borderBottomWidth: '1px' }}
+                  >
+                    <tbody>
+                      {[
+                        ['Fecha:', formatFecha(selectedVenta.fecha)],
+                        ['Hora:', formatHora(selectedVenta.fecha, selectedVenta.hora)],
+                        ['Método de Pago:', selectedVenta.metodoPago],
+                        [
+                          'Total:',
+                          <span className="font-semibold text-green-600">
+                            S/ {selectedVenta.total.toFixed(2)}
+                          </span>,
+                        ],
+                      ].map(([label, value], i) => (
+                        <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                          <td className="px-4 py-3 font-medium w-1/3">{label}</td>
+                          <td className="px-4 py-3">{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
 
-                <h3 className="mb-4">Productos</h3>
-                <div className="table-responsive">
-                  <table className="table">
+                {/* — Tabla 2: Productos */}
+                <div className="rounded-md p-4">
+                  <h3 className="text-gray-700 mb-3 font-semibold">Productos</h3>
+                  <table
+                    className="w-full table-auto border-t border-b border-gray-300"
+                    style={{ borderTopWidth: '1px', borderBottomWidth: '1px' }}
+                  >
                     <thead>
-                      <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
+                      <tr className="bg-gray-100">
+                        {['Producto','Precio Unitario','Cantidad','Subtotal'].map((h, i) => (
+                          <th
+                            key={i}
+                            className={`
+                              px-4 py-2 text-sm font-medium text-gray-600 
+                              ${i===0? 'text-left': i===3 ? 'text-right':'text-center'}
+                            `}
+                          >
+                            {h}
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody>
-                      {selectedVenta.productos?.map((item, index) => (
-                        <tr key={index}>
-                          <td className="font-medium">{item.producto?.nombre || item.nombre}</td>
-                          <td>S/ {(item.producto?.precio || item.precio).toFixed(2)}</td>
-                          <td>{item.cantidad}</td>
-                          <td className="font-medium">S/ {item.subtotal.toFixed(2)}</td>
-                        </tr>
-                      )) || (
+                      {selectedVenta.detalles?.length > 0 ? (
+                        selectedVenta.detalles.map((item, idx) => (
+                          <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                            <td className="px-4 py-2 text-sm text-gray-700">{item.productoNombre || item.nombre}</td>
+                            <td className="px-4 py-2 text-sm text-gray-700 text-center">
+                              S/ {(item.precioUnitario ?? item.precio).toFixed(2)}
+                            </td>
+                            <td className="px-4 py-2 text-sm text-gray-700 text-center">{item.cantidad}</td>
+                            <td className="px-4 py-2 text-sm text-gray-700 text-right font-medium">
+                              S/ {item.subtotal.toFixed(2)}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
                         <tr>
-                          <td colSpan="4" className="text-center">
+                          <td colSpan="4" className="px-4 py-6 text-center text-gray-500">
                             No hay productos disponibles
                           </td>
                         </tr>
@@ -908,6 +996,7 @@ const Ventas = () => {
                     </tbody>
                   </table>
                 </div>
+
               </div>
             </div>
           </div>
