@@ -1,15 +1,12 @@
-// src/services/auditoriaService.js
 import axios from 'axios';
+const API_URL = 'http://localhost:8080/api/auditoria'; 
 
-// URL del backend
-const API_URL = 'http://localhost:8080/api/auditoria'; // Cambia la URL si es necesario
 
-// Función para obtener el token de autenticación desde localStorage
 const getAuthToken = () => {
-  return localStorage.getItem('token'); // Devuelve el token JWT almacenado en localStorage
+  return localStorage.getItem('token'); 
 };
 
-// Manejar errores de las solicitudes HTTP
+
 const manejarError = (error) => {
   let mensaje = 'Hubo un problema. Por favor, intenta más tarde.';
   
@@ -36,21 +33,20 @@ const manejarError = (error) => {
     mensaje = 'No se pudo conectar al servidor. Revisa tu conexión.';
   }
 
-  console.error(mensaje);  // Para depuración
-  throw error;  // Lanza el error para manejarlo donde se llame esta función
+  console.error(mensaje);  
+  throw error;  
 };
 
-// Obtener todos los registros de auditoría
 export const obtenerRegistrosAuditoria = async () => {
   try {
-    // Realiza la solicitud GET añadiendo el token JWT en los encabezados
+    
     const response = await axios.get(API_URL, {
       headers: {
-        Authorization: `Bearer ${getAuthToken()}`,  // Token JWT en el encabezado
+        Authorization: `Bearer ${getAuthToken()}`, 
       },
     });
-    return response.data;  // Devuelve los datos de auditoría
+    return response.data;  
   } catch (error) {
-    manejarError(error);  // Maneja el error si la solicitud falla
+    manejarError(error);  
   }
 };

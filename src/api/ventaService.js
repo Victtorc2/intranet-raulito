@@ -1,8 +1,7 @@
-// src/api/ventaService.js
 
 const apiUrl = 'http://localhost:8080/api/ventas'
 
-// Helpers
+
 const getAuthToken = () =>
   typeof window !== 'undefined'
     ? localStorage.getItem('token')
@@ -16,7 +15,7 @@ const getCurrentUser = () => {
     const { correo } = JSON.parse(raw);
     return correo;
   } catch {
-    return raw;  // en caso de que guardases solo un string
+    return raw;  
   }
 };
 
@@ -29,7 +28,7 @@ const handleApiError = async (response) => {
   return response
 }
 
-// Servicio de ventas
+
 export const ventaService = {
   // 1. Registrar nueva venta
   async registrarVenta(ventaData) {

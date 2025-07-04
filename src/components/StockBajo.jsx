@@ -90,7 +90,7 @@ const StockBajo = () => {
   return (
     <div className="stock-bajo">
       <div className="chart-container">
-        <ResponsiveContainer width="100%" height={Math.max(280, productos.length * 50)}>
+        <ResponsiveContainer width="100%" height={productos.length * 40}>
           <BarChart
             data={productos}
             layout="vertical"
@@ -120,6 +120,7 @@ const StockBajo = () => {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+
       </div>
 
       <div className="legend">

@@ -77,35 +77,55 @@ const AppRouter = () => {
 
         {/* Rutas exclusivas para Admin */}
         <Route
-          path="/productos"
-          element={
-            <ProtectedRoute allowedRoles={['Admin']}>
-              <AdminLayout>
-                <Productos />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/productos/crear"
-          element={
-            <ProtectedRoute allowedRoles={['Admin']}>
-              <AdminLayout>
-                <ProductoForm />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/productos/editar/:id"
-          element={
-            <ProtectedRoute allowedRoles={['Admin']}>
-              <AdminLayout>
-                <ProductoForm />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
+  path="/productos"
+  element={
+    <ProtectedRoute allowedRoles={['Admin', 'Empleado']}>
+      {role === 'Admin' ? (
+        <AdminLayout>
+          <Productos />
+        </AdminLayout>
+      ) : (
+        <EmployeeLayout>
+          <Productos />
+        </EmployeeLayout>
+      )}
+    </ProtectedRoute>
+  }
+/>
+
+       <Route
+  path="/productos/crear"
+  element={
+    <ProtectedRoute allowedRoles={['Admin', 'Empleado']}>
+      {role === 'Admin' ? (
+        <AdminLayout>
+          <ProductoForm />
+        </AdminLayout>
+      ) : (
+        <EmployeeLayout>
+          <ProductoForm />
+        </EmployeeLayout>
+      )}
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/productos/editar/:id"
+  element={
+    <ProtectedRoute allowedRoles={['Admin', 'Empleado']}>
+      {role === 'Admin' ? (
+        <AdminLayout>
+          <ProductoForm />
+        </AdminLayout>
+      ) : (
+        <EmployeeLayout>
+          <ProductoForm />
+        </EmployeeLayout>
+      )}
+    </ProtectedRoute>
+  }
+/>
+
         <Route
           path="/reportes"
           element={

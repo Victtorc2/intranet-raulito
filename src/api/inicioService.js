@@ -4,10 +4,10 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 /**
- * Genera y descarga un PDF con el reporte diario de ventas.
- * @param {Array} ventasDelDia  — Lista de ventas ya filtradas para hoy.
- * @param {Object} estadisticas — { totalVentas, totalIngresos, promedioVenta, ventasEfectivo, ventasTarjeta }
- * @param {string} usuario      — Nombre o correo del usuario que genera el reporte.
+
+ * @param {Array} ventasDelDia  
+  @param {Object} estadisticas 
+  @param {string} usuario      
  */
 export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario) => {
   try {
@@ -15,7 +15,7 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
     const fecha = new Date().toLocaleDateString("es-PE");
     const hora  = new Date().toLocaleTimeString("es-PE");
 
-    // === HEADER ===
+    
     doc.setFont("helvetica");
     doc.setFontSize(22);
     doc.setTextColor(40);
@@ -30,7 +30,7 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
     doc.text(`Hora de generación: ${hora}`, 20, 52);
     doc.text(`Generado por: ${usuario}`, 20, 59);
 
-    // === RESUMEN ESTADÍSTICO ===
+    
     doc.setFontSize(16);
     doc.setTextColor(40);
     doc.text("RESUMEN DEL DÍA", 20, 75);
@@ -40,19 +40,19 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
 
     doc.setFontSize(11);
     doc.setTextColor(60);
-    // Total Ventas
+    
     doc.text("Total de Ventas:", 25, 90);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(40, 167, 69);
     doc.text(`${estadisticas.totalVentas}`, 25, 97);
-    // Ingresos Totales
+    
     doc.setFont("helvetica", "normal");
     doc.setTextColor(60);
     doc.text("Ingresos Totales:", 25, 107);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(40, 167, 69);
     doc.text(`S/ ${estadisticas.totalIngresos.toFixed(2)}`, 25, 114);
-    // Promedio y Métodos
+    
     doc.setFont("helvetica", "normal");
     doc.setTextColor(60);
     doc.text("Promedio por Venta:", 105, 90);
@@ -70,7 +70,7 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
       114
     );
 
-    // === TABLA DE VENTAS ===
+    
     doc.setFontSize(16);
     doc.setTextColor(40);
     doc.text("DETALLE DE VENTAS", 20, 135);
@@ -88,7 +88,7 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
       venta.observaciones || "-",
     ]);
 
-    // Aquí usamos la función autoTable(doc, opts)
+   
     autoTable(doc, {
       head: [["#", "ID Venta", "Hora", "Total", "Método", "Productos", "Observaciones"]],
       body: tableData,
@@ -119,7 +119,7 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
       margin: { left: 20, right: 20 },
     });
 
-    // === FOOTER ===
+    
     const pageHeight = doc.internal.pageSize.height;
     doc.setFontSize(8);
     doc.setTextColor(120);
@@ -130,7 +130,7 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
     doc.setLineWidth(0.5);
     doc.line(20, pageHeight - 25, 190, pageHeight - 25);
 
-    // Guardar
+   
     const nombreArchivo = `ventas-${fecha.replace(/\//g, "-")}.pdf`;
     doc.save(nombreArchivo);
 
@@ -141,6 +141,6 @@ export const generarPDFVentasDelDia = async (ventasDelDia, estadisticas, usuario
   }
 };
 
-// (si sigues usando estas funciones elsewhere, déjalas igual)
+
 export const obtenerVentasDelDia = async () => { /* ... */ };
 export const obtenerEstadisticasDelDia = async () => { /* ... */ };

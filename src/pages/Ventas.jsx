@@ -1,4 +1,3 @@
-"use client"
 
 import { useState, useEffect, useCallback } from "react"
 import {
@@ -135,20 +134,21 @@ const Ventas = () => {
     }
   }, [handleError])
 
-  const cargarEstadisticas = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const data = await ventaService.obtenerEstadisticas()
-      setEstadisticas(data)
-      return data
-    } catch (err) {
-      handleError(err, "Error al cargar estadísticas")
-      return null
-    } finally {
-      setLoading(false)
-    }
-  }, [handleError])
+ const cargarEstadisticas = useCallback(async () => {
+  setLoading(true)
+  setError(null)
+  try {
+    const data = await ventaService.obtenerEstadisticas()
+    setEstadisticas(data)
+    return data
+  } catch (err) {
+    handleError(err, "Error al cargar estadísticas")
+    return null
+  } finally {
+    setLoading(false)
+  }
+}, [handleError])
+
 
   const registrarVenta = useCallback(
     async (ventaData) => {
@@ -231,6 +231,8 @@ const Ventas = () => {
     buscarProductosEnTiempoReal()
   }, [searchTerm])
 
+  
+  
   // Función para cargar datos iniciales
   const cargarDatosIniciales = async () => {
     try {

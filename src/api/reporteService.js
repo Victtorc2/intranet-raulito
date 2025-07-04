@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-// Función para manejar errores de forma uniforme
+
 const manejarError = (error) => {
   let mensaje = 'Hubo un problema. Intenta más tarde.';
 
@@ -50,7 +50,7 @@ export const obtenerHistorialVentas = async () => {
 
 
 
-// ✅ Actualizado con endpoint real del backend
+
 export const obtenerStockBajo = async () => {
   try {
     const res = await axios.get('http://localhost:8080/api/inventario/stock-bajo', {
@@ -79,7 +79,7 @@ export const obtenerIngresosMensuales = async () => {
 };
 
 
-// ✅ Actualizado con el path correcto del backend
+
 export const obtenerVentasPorDia = async () => {
   try {
     const res = await axios.get('http://localhost:8080/api/ventas/reporte/por-dia', {
@@ -93,7 +93,7 @@ export const obtenerVentasPorDia = async () => {
   }
 };
 
-// ✅ Ya coincide con el endpoint del backend
+
 export const obtenerMovimientos = async () => {
   try {
     const res = await axios.get('http://localhost:8080/api/inventario', {
