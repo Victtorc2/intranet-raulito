@@ -7,7 +7,7 @@ import Swal from "sweetalert2"
 import { useForm, Controller } from "react-hook-form"
 import "../styles/Productos.css"
 
-const apiUrl = "http://localhost:8080/api/productos"
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/productos`;
 
 const ProductoForm = () => {
   const navigate = useNavigate()
