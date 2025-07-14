@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ventaService } from "../api/ventaService.js";
 import { generarPDFVentasDelDia } from "../api/inicioService.js";
-import "../styles/inicio.component.css";
+import "../styles/Iniciocomponent.css";
 
 const Inicio = () => {
   const { getRole } = useAuth();
