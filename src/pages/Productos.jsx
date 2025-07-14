@@ -8,7 +8,7 @@ import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import "../styles/Productos.css"
 
-const apiUrl = "http://localhost:8080/api/productos"
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/productos`;
 
 const Productos = () => {
   const [productos, setProductos] = useState([])
