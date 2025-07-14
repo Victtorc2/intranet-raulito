@@ -1,6 +1,6 @@
 // src/api/ventaService.js
 
-const apiUrl = 'http://localhost:8080/api/ventas'
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/ventas`;
 
 // Helpers
 const getAuthToken = () =>

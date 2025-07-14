@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+const API = import.meta.env.VITE_API_URL;
 
 const manejarError = (error) => {
   let mensaje = 'Hubo un problema. Intenta más tarde.';
@@ -32,10 +33,9 @@ const manejarError = (error) => {
   throw error;
 };
 
-
 export const obtenerHistorialVentas = async () => {
   try {
-    const res = await axios.get("http://localhost:8080/api/ventas/historial", {
+    const res = await axios.get(`${API}/api/ventas/historial`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -47,13 +47,9 @@ export const obtenerHistorialVentas = async () => {
   }
 };
 
-
-
-
-
 export const obtenerStockBajo = async () => {
   try {
-    const res = await axios.get('http://localhost:8080/api/inventario/stock-bajo', {
+    const res = await axios.get(`${API}/api/inventario/stock-bajo`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
@@ -63,11 +59,10 @@ export const obtenerStockBajo = async () => {
     manejarError(error);
   }
 };
-
 
 export const obtenerIngresosMensuales = async () => {
   try {
-    const res = await axios.get('http://localhost:8080/api/ventas/reporte/por-mes', {
+    const res = await axios.get(`${API}/api/ventas/reporte/por-mes`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
@@ -77,12 +72,10 @@ export const obtenerIngresosMensuales = async () => {
     manejarError(error);
   }
 };
-
-
 
 export const obtenerVentasPorDia = async () => {
   try {
-    const res = await axios.get('http://localhost:8080/api/ventas/reporte/por-dia', {
+    const res = await axios.get(`${API}/api/ventas/reporte/por-dia`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
@@ -93,10 +86,9 @@ export const obtenerVentasPorDia = async () => {
   }
 };
 
-
 export const obtenerMovimientos = async () => {
   try {
-    const res = await axios.get('http://localhost:8080/api/inventario', {
+    const res = await axios.get(`${API}/api/inventario`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },

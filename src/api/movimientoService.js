@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const apiUrl = 'http://localhost:8080/api/inventario';
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/inventario`;
 
 const getAuthToken = () => localStorage.getItem('token');
 
